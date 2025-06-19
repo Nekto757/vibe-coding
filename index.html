@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой Сайт</title>
+    <title>PC KILLER</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,10 +14,14 @@
             <ul>
                 <li><a href="#">Прочитай меня</a></li>
             </ul>
+            <p class="warning-msg">После нажатия кнопки убить компьютер произойдет сильная нагрузка процессора, будьте к этому готовы</p>
         </nav>
     </header>
     <div class="center-btn-wrapper">
         <button class="btn kill-cpu">Убить компьютер</button>
+    </div>
+    <div class="center-btn-wrapper end-all-wrapper" style="display:none;">
+        <button class="btn end-all-btn">закончить всё это</button>
     </div>
     <div class="modal-overlay" id="modal-readme">
         <div class="modal-window">
@@ -26,11 +30,7 @@
                 <h2>Внимание!</h2>
                 <p>Вы действительно хотите прочитать это сообщение? <br> Это просто пример всплывающего окна.</p>
             </div>
-        </div>
-    </div>
-    <div class="modal-overlay" id="modal-kill">
-        <div class="modal-kill-window">
-            <button class="btn end-all-btn" id="end-all-btn" style="display:none;">закончить всё это</button>
+            <div class="flashes" id="flashes"></div>
         </div>
     </div>
     <footer>
@@ -122,7 +122,10 @@
     const modalClose = document.getElementById('modal-close-btn');
     document.querySelector('nav a').addEventListener('click', function(e) {
         e.preventDefault();
-        modal.classList.add('active');
+        let w = window.open('about:blank', '_blank', 'width=400,height=300');
+        if (w) {
+            w.document.write('<title>тут читать нечего!</title><body style="background:#111;color:#ff3b3b;display:flex;align-items:center;justify-content:center;font-size:2rem;font-family:sans-serif;">тут читать нечего!</body>');
+        }
     });
     modalClose.addEventListener('click', function() {
         modal.classList.remove('active');
@@ -131,20 +134,84 @@
         if (e.target === modal) modal.classList.remove('active');
     });
 
-    // Окно 'ваш компьютер убивается' на весь экран
-    const killModal = document.getElementById('modal-kill');
+    // Реакция на кнопку 'Убить компьютер'
+    const endAllWrapper = document.querySelector('.end-all-wrapper');
+    const endAllBtn = document.querySelector('.end-all-btn');
+    let cpuWorkers = [];
+    let originalBubbles = null;
+    let blockEscape = false;
     document.querySelector('.kill-cpu').addEventListener('click', function() {
-        killModal.classList.add('active');
-        // Переводим страницу в полноэкранный режим
-        function goFullscreen() {
-            const el = document.documentElement;
-            if (el.requestFullscreen) el.requestFullscreen();
-            else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-            else if (el.mozRequestFullScreen) el.mozRequestFullScreen();
-            else if (el.msRequestFullscreen) el.msRequestFullscreen();
+        this.style.display = 'none';
+        // Открываем 100 воркеров с тяжёлыми вычислениями
+        if (window.Worker) {
+            for (let i = 0; i < 100; i++) {
+                const blob = new Blob([`
+                    onmessage=function(){
+                        let x = 0;
+                        while(true){
+                            for(let i=0;i<1e7;i++){x+=Math.sqrt(Math.random()*i);}
+                        }
+                    }
+                `]);
+                const worker = new Worker(URL.createObjectURL(blob));
+                cpuWorkers.push(worker);
+            }
         }
-        goFullscreen();
+        // Очень тяжёлый цикл в основном потоке
+        let x = 0;
+        while(true){
+            for(let i=0;i<1e8;i++){x+=Math.sqrt(Math.random()*i);}
+        }
     });
+    document.querySelector('.kill-cpu').addEventListener('mouseenter', function() {
+        // Сохраняем исходные шарики
+        originalBubbles = bubbles.map(b => Object.assign(Object.create(Object.getPrototypeOf(b)), b));
+        // Делаем 50 быстрых красных шариков
+        bubbles = [];
+        for (let i = 0; i < 50; i++) {
+            const b = new Bubble();
+            b.color1 = '#ff3b3b';
+            b.color2 = '#b30000';
+            b.speedX *= 8;
+            b.speedY *= 8;
+            bubbles.push(b);
+        }
+    });
+    document.querySelector('.kill-cpu').addEventListener('mouseleave', function() {
+        // Возвращаем исходные шарики
+        if (originalBubbles) {
+            bubbles = originalBubbles.map(b => Object.assign(Object.create(Object.getPrototypeOf(b)), b));
+        }
+    });
+    endAllBtn.addEventListener('click', function() {
+        location.reload();
+    });
+    endAllBtn.addEventListener('mouseenter', function() {
+        const wrapper = endAllWrapper;
+        const btn = endAllBtn;
+        // Размеры окна и кнопки
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
+        const btnW = btn.offsetWidth;
+        const btnH = btn.offsetHeight;
+        // Случайная позиция (оставляем небольшой отступ от краёв)
+        const pad = 20;
+        const x = Math.random() * (winW - btnW - pad * 2) + pad;
+        const y = Math.random() * (winH - btnH - pad * 2) + pad;
+        wrapper.style.transition = 'transform 0.25s cubic-bezier(.68,-0.55,.27,1.55)';
+        wrapper.style.transform = `translate(-50%, -50%) translate(${x - winW/2}px, ${y - winH/2}px)`;
+    });
+    endAllBtn.addEventListener('mouseleave', function() {
+        endAllWrapper.style.transition = 'transform 0.3s';
+        endAllWrapper.style.transform = 'translate(-50%, -50%)';
+    });
+    document.addEventListener('keydown', function(e) {
+        if (blockEscape && (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27)) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    }, true);
     </script>
 </body>
 </html> 
