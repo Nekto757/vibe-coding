@@ -9,23 +9,32 @@
 <body>
     <canvas id="bubbles-bg"></canvas>
     <header>
-        <h1>Добро пожаловать на мой сайт!</h1>
+        <h1>PC KILLER</h1>
         <nav>
             <ul>
-                <li><a href="#">Главная</a></li>
-                <li><a href="#">О нас</a></li>
-                <li><a href="#">Контакты</a></li>
+                <li><a href="#">Прочитай меня</a></li>
             </ul>
         </nav>
     </header>
-    <main>
-        <section>
-            <h2>Основной контент</h2>
-            <p>Здесь будет размещаться основной контент сайта.</p>
-        </section>
-    </main>
+    <div class="center-btn-wrapper">
+        <button class="btn kill-cpu">Убить компьютер</button>
+    </div>
+    <div class="modal-overlay" id="modal-readme">
+        <div class="modal-window">
+            <button class="modal-close" id="modal-close-btn">×</button>
+            <div class="modal-content">
+                <h2>Внимание!</h2>
+                <p>Вы действительно хотите прочитать это сообщение? <br> Это просто пример всплывающего окна.</p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="modal-kill">
+        <div class="modal-kill-window">
+            <button class="btn end-all-btn" id="end-all-btn" style="display:none;">закончить всё это</button>
+        </div>
+    </div>
     <footer>
-        <p>&copy; 2024 Мой Сайт</p>
+        <p>Мы не несем ответственность за дальнейшие последствия, все права не защищены</p>
     </footer>
     <script>
     // Анимация плавающих разноцветных кружков
@@ -107,6 +116,36 @@
         canvas.width = width;
         canvas.height = height;
     });
+
+    // Модальное окно для 'Прочитай меня'
+    const modal = document.getElementById('modal-readme');
+    const modalClose = document.getElementById('modal-close-btn');
+    document.querySelector('nav a').addEventListener('click', function(e) {
+        e.preventDefault();
+        modal.classList.add('active');
+    });
+    modalClose.addEventListener('click', function() {
+        modal.classList.remove('active');
+    });
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) modal.classList.remove('active');
+    });
+
+    // Окно 'ваш компьютер убивается' на весь экран
+    const killModal = document.getElementById('modal-kill');
+    document.querySelector('.kill-cpu').addEventListener('click', function() {
+        killModal.classList.add('active');
+        // Переводим страницу в полноэкранный режим
+        function goFullscreen() {
+            const el = document.documentElement;
+            if (el.requestFullscreen) el.requestFullscreen();
+            else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+            else if (el.mozRequestFullScreen) el.mozRequestFullScreen();
+            else if (el.msRequestFullscreen) el.msRequestFullscreen();
+        }
+        goFullscreen();
+    });
     </script>
 </body>
 </html> 
+
