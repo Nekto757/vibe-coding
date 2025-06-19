@@ -1,13 +1,13 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
-    background: linear-gradient(120deg, #f4f4f4 0%, #e0e7ff 100%);
-    color: #222;
+    background: #181926;
+    color: #f4f4f4;
     min-height: 100vh;
 }
 
 header {
-    background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%);
+    background: linear-gradient(90deg, #23243a 0%, #23243a 100%);
     color: #fff;
     padding: 32px 0 20px 0;
     text-align: center;
@@ -35,7 +35,7 @@ nav ul {
 }
 
 nav a {
-    color: #fff;
+    color: #ffe53b;
     text-decoration: none;
     font-weight: 500;
     font-size: 1.1rem;
@@ -43,16 +43,17 @@ nav a {
     border-radius: 8px;
     transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     position: relative;
+    background: rgba(255,229,59,0.08);
 }
 
 nav a:hover, nav a:focus {
-    background: #fff;
-    color: #4f46e5;
+    background: #ffe53b;
+    color: #23243a;
     box-shadow: 0 2px 8px rgba(99,102,241,0.12);
 }
 
 nav a.active {
-    background: #ff9800;
+    background: #ffb300;
     color: #fff;
     box-shadow: 0 2px 8px rgba(255,152,0,0.15);
 }
@@ -60,10 +61,10 @@ nav a.active {
 main {
     max-width: 900px;
     margin: 48px auto 0 auto;
-    background: #fff;
+    background: #23243a;
     padding: 40px 32px 32px 32px;
     border-radius: 18px;
-    box-shadow: 0 6px 32px rgba(99,102,241,0.08);
+    box-shadow: 0 6px 32px rgba(0,0,0,0.18);
     min-height: 400px;
     position: relative;
     z-index: 1;
@@ -78,9 +79,9 @@ main {
 section {
     margin-bottom: 32px;
     padding: 24px 18px;
-    background: linear-gradient(90deg, #f1f5ff 0%, #fef6e4 100%);
+    background: linear-gradient(90deg, #23243a 0%, #23243a 100%);
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(255,152,0,0.04);
+    box-shadow: 0 2px 12px rgba(255,221,51,0.04);
     transition: box-shadow 0.2s;
 }
 
@@ -89,13 +90,13 @@ section:hover {
 }
 
 h2 {
-    color: #4f46e5;
+    color: #ffe53b;
     margin-top: 0;
 }
 
 button, .btn {
-    background: linear-gradient(90deg, #ff9800 0%, #fbbf24 100%);
-    color: #fff;
+    background: linear-gradient(90deg, #ffe53b 0%, #ffb300 100%);
+    color: #23243a;
     border: none;
     border-radius: 8px;
     padding: 10px 28px;
@@ -108,14 +109,15 @@ button, .btn {
 }
 
 button:hover, .btn:hover {
-    background: linear-gradient(90deg, #fbbf24 0%, #ff9800 100%);
+    background: linear-gradient(90deg, #ffb300 0%, #ffe53b 100%);
+    color: #181926;
     box-shadow: 0 4px 16px rgba(255,152,0,0.18);
     transform: translateY(-2px) scale(1.03);
 }
 
 footer {
-    background: linear-gradient(90deg, #6366f1 0%, #4f46e5 100%);
-    color: #fff;
+    background: linear-gradient(90deg, #23243a 0%, #23243a 100%);
+    color: #ffe53b;
     text-align: center;
     padding: 22px 0 18px 0;
     position: relative;
